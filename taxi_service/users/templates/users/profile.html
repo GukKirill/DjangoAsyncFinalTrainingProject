@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col-md-3">
+
+            <div class="content-section">
+                <div class="media" align="left">
+                    <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+                    <div class="card-body">
+                        <h2 class="account-heading">  {{ user.username }}</h2>
+                        <p class="text-secondary"><b>E-mail:</b> {{ user.email }}</p>
+                        <p class="text-secondary"><b>Created:</b> {{ user.date_joined }}</p>
+                        <p class="text-secondary"><b>Taxi trips:</b> {{ u_trips.count }}</p>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+    <div class="col-md-3">
+        <div class="card mb-2">
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4">Change profile info:</legend>
+                        {{ u_form|crispy }}
+                        <br>
+                        {{ p_form|crispy }}
+                    </fieldset>
+                    <br>
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                    </div>
+                    <br>
+                    <div class="border-top pt-3">
+                        <small class="text-muted">
+                            <a href="{% url 'password_reset' %}">Reset Password</a>
+                        </small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-2">
+            <div class="card-body">
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">All trips:</legend>
+                    {% for trip in u_trips %}
+                    <p>
+                        {{ trip }}
+                        ->
+                            {% if not trip.comment %}
+                                <small class="text-muted">
+                                    <a href="{% url 'comment' trip.pk %}">Comment</a>
+                                </small>
+                            {% else %}
+                                <small class="text-muted">
+                                    <a href="{% url 'comment_update' trip.pk %}">Update</a>
+                                    &nbsp;
+                                    <a href="{% url 'comment_delete' trip.pk %}">Delete</a>
+                                </small>
+                            {% endif %}
+                    </p>
+                    {% endfor %}
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock page_content %}

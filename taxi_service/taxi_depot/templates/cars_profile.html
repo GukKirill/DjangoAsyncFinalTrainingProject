@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends "base.html" %}
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+{% load crispy_forms_tags %}
+{% block page_content %}
+<div class="row">
+    <div class="col-md-2">
+
+            <div class="content-section">
+                <div class="media" align="left">
+                    <img class="rounded-circle account-img" src="{{ car.photo.url }}">
+                    <div class="card-body">
+                        <h4 class="account-heading">  {{ car.model.title }}</h4>
+                        <p class="text-secondary">
+                            <img src="{{ car.model.manufacturer.logo.url }}" align="left" width="40" height="30">
+                            {{ car.model.manufacturer.title }}
+                        </p>
+                        <p class="text-secondary"><b>Year:</b> {{ car.production_year }}</p>
+                        <p class="text-secondary"><b>Registration:</b> {{ car.reg_number }}</p>
+                        <p class="text-secondary"><b>Taxi trips:</b> {{ c_trips_count }}</p>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-2">
+            <div class="card-body">
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">All comments:</legend>
+                    {% for comment in c_comments %}
+                        {% if comment.about_car %}
+                        <p>Author: {{ comment.author }} on {{ comment.created_on }}</p>
+                            <p>{{ comment.about_car }}</p>
+                            {% if user == comment.author %}
+                                <p>
+                                <small class="text-muted">
+                                    <a href="{% url 'comment_update' comment.trip.pk %}">Update</a>
+                                    &nbsp;
+                                    <a href="{% url 'comment_delete' comment.pk %}">Delete</a>
+                                </small>
+                                </p>
+                            {% endif %}
+                        {% endif %}
+                        <hr>
+                    {% endfor %}
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-2">
+            <div class="card-body">
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">All trips:</legend>
+                    {% for trip in c_trips %}
+                    <p>
+                        {{ trip }}
+                        {% if user == trip.client %}
+                        ->
+                            {% if not trip.comment.about_car %}
+                                <small class="text-muted">
+                                    <a href="{% url 'comment' trip.pk %}">Comment</a>
+                                </small>
+                            {% else %}
+                                <small class="text-muted">
+                                    <a href="{% url 'comment_update' trip.pk %}">Update</a>
+                                    &nbsp;
+                                    <a href="{% url 'comment_delete' trip.comment.pk %}">Delete</a>
+                                </small>
+                            {% endif %}
+                        {% endif %}
+                    </p>
+                    <hr>
+                    {% endfor %}
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock page_content %}

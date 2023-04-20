@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+</head>
+{% block page_content %}
+<body>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-2">
+            <div class="card mb-2">
+                <img class="card-img-top" src="https://clck.ru/33aHq4" height="260px">
+                <div class="card-body">
+                    <a href="{% url 'drivers' %}" class="btn btn-primary">
+                        Drivers
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card mb-3">
+                <img class="card-img-top" src="https://clck.ru/33aHqU" height="260px">
+                <div class="card-body">
+                    <a href="{% url 'cars' %}" class="btn btn-primary">
+                        Cars
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card mb-2">
+                <img class="card-img-top" src="https://clck.ru/33aHqu" height="260px">
+                <div class="card-body">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="btn btn-primary">
+                        Profile
+                    </a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-primary">
+                        Login
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+{% endblock page_content %}
+</html>

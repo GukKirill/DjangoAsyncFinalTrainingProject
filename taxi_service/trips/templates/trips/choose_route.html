@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+{% block page_content %}
+<body>
+<p>Driver: {{ driver }}</p>
+<p>Car: {{ car }}</p>
+{% if not is_calculated %}
+<h4>Select route points</h4>
+<form method="POST">
+    {% csrf_token %}
+    <ul>
+        <li>
+            <i>From:</i><br>
+            <select required name="start_point">
+            {% for point in points %}
+                <option>{{ point }}</option>
+            {% endfor %}
+            </select>
+        </li>
+        <li>
+            <i>To:</i><br>
+            <select required name="end_point">
+            {% for point in points %}
+                <option>{{ point }}</option>
+            {% endfor %}
+            </select>
+        </li>
+    </ul>
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">Calculate</button>
+        &nbsp;
+        <a href="javascript:history.back()" class="btn btn-primary">Cancel</a>
+    </div>
+</form>
+{% else %}
+<p>From: {{ start_point }}</p>
+<p>To: {{ end_point }}</p>
+<p>Cost: {{ cost }}</p>
+<h4>Confirm order</h4>
+<div class="form-group">
+    <a href="{% url 'trip_confirmation' driver_pk=driver.pk car_pk=car.pk start=start_point end=end_point cost=cost %}" class="btn btn-primary">Continue</a>
+    &nbsp;
+    <a href="javascript:history.back()" class="btn btn-primary">Cancel</a>
+</div>
+{% endif %}
+</body>
+{% endblock page_content %}
+</html>

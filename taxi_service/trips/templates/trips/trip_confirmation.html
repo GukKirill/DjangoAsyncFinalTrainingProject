@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+{% block page_content %}
+<body>
+<div class="content-section">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Check order</legend>
+            <p>Driver: {{ driver }}</p> <input type="number" name="driver" hidden value="{{ driver.pk }}">
+            <p>Car: {{ car }}</p> <input type="number" name="car" hidden value="{{ car.pk }}">
+            <p>From: {{ start_point }}</p> <input name="start_point" hidden value="{{ start_point }}">
+            <p>To: {{ end_point }}</p> <input name="end_point" hidden value="{{ end_point }}">
+            <p>Cost: {{ cost }}</p> <input type="number" name="cost" hidden value="{{ cost }}">
+            <h2>Are you sure you want to confirm the order?</h2>
+        </fieldset>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">OK</button>
+            &nbsp;
+            <a href="javascript:history.back()" class="btn btn-primary">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+{% endblock page_content %}
+</html>

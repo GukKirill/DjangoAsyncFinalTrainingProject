@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+{% block page_content %}
+<body>
+<b>Filter:</b>
+<hr>
+<form method="POST">
+    {% csrf_token %}
+    <ul>
+        <li>
+            <i>manufacturer:</i><br>
+            <select multiple name="manufacturers">
+            {% for manufacturer in manufacturers %}
+                <option selected>{{ manufacturer.title }}</option>
+            {% endfor %}
+            </select>
+        </li>
+        <li>
+            <i>year:</i><br>
+            <input type="number" placeholder="from" name="year_from" value="{{ year_from }}">
+            <b>-</b>
+            <input type="number" placeholder="to" name="year_to" value="{{ year_to }}">
+        </li>
+    </ul>
+    <button type="submit" class="btn btn-primary">OK</button>
+</form>
+<hr>
+<div class="row">
+  {% for car in cars %}
+  <div class="col-md-2">
+    <div class="card mb-2">
+      <img class="card-img-top" src="{{ car.photo.url }}" height="260px" width="250px">
+      <div class="card-body">
+        <h5 class="card-title">Model: <i>{{ car.model.title }}</i></h5>
+        <h5 class="card-title">Year: <i>{{ car.production_year }}</i></h5>
+        <h5 class="card-title">Registration: <i>{{ car.reg_number }}</i></h5>
+        <h5 class="card-title">Color: <i>{{ car.color }}</i></h5>
+          <hr>
+        <h5 class="card-title">Drivers:</h5>
+        {% for driver in car.drivers.all %}
+        <p class="card-text">{{ driver.driver_name }} - {{ driver.reg_doc_number }}</p>
+        {% endfor %}
+          <p>
+            <a href="{% url 'cars_profile' car.pk %}" class="btn btn-primary">
+            See profile
+            </a>
+            {% if user.is_authenticated and car.free is True %}
+            <a href="{% url 'choose_driver' car.pk %}" class="btn btn-primary">
+            Call
+            </a>
+            {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+</body>
+{% endblock page_content %}
+</html>

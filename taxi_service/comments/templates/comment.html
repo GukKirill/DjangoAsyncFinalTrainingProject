@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+{% block page_content %}
+<body>
+<h3>Comment the trip <i>{{ trip }}</i></h3>
+<hr>
+    <form method="POST">
+    {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <h5>About driver <i>{{ trip.driver }}</i>:</h5>
+                    <div class="form-group">
+                        {{ form.about_driver }}
+                    </div>
+            </div>
+            <div class="col-md-6">
+                <h5>About car <i>{{ trip.car }}</i>:</h5>
+                    <div class="form-group">
+                        {{ form.about_car }}
+                    </div>
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+    </form>
+</body>
+{% endblock page_content %}
+</html>
